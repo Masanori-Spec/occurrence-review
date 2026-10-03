@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "1.0",
+  "complete": true,
+  "window": {
+    "start": "2026-01-01",
+    "end": "2026-02-01",
+    "semantics": "Occurrence START is in [start 00:00, end 00:00). UTC, floating and DATE are separate temporal domains; this is not interval-overlap matching."
+  },
+  "summary": {
+    "added": 0,
+    "removed": 0,
+    "moved": 1,
+    "durationChanged": 1,
+    "metadataChanged": 1,
+    "unchanged": 4
+  },
+  "changes": [
+    {
+      "id": "[\"design-review@example.invalid\",\"utc:2026-01-13T09:00:00Z\"]",
+      "uid": "design-review@example.invalid",
+      "recurrenceId": "2026-01-13T09:00:00Z",
+      "kind": "changed",
+      "changes": [
+        "start",
+        "duration",
+        "metadata"
+      ],
+      "before": {
+        "uid": "design-review@example.invalid",
+        "recurrenceId": "2026-01-13T09:00:00Z",
+        "temporalType": "utc",
+        "start": "2026-01-13T09:00:00Z",
+        "end": "2026-01-13T10:00:00Z",
+        "durationSeconds": 3600,
+        "summary": "Design review",
+        "location": "Room A",
+        "description": "",
+        "inWindow": true
+      },
+      "after": {
+        "uid": "design-review@example.invalid",
+        "recurrenceId": "2026-01-13T09:00:00Z",
+        "temporalType": "utc",
+        "start": "2026-01-14T11:00:00Z",
+        "end": "2026-01-14T12:30:00Z",
+        "durationSeconds": 5400,
+        "summary": "Design review",
+        "location": "Room B",
+        "description": "",
+        "inWindow": true
+      },
+      "evidence": {
+        "identity": "same UID and typed RECURRENCE-ID",
+        "fields": [
+          "start",
+          "duration",
+          "location"
+        ],
+        "metadataChanges": [
+          {
+            "field": "location",
+            "before": [
+              {
+                "params": {},
+                "values": [
+                  "Room A"
+                ]
+              }
+            ],
+            "after": [
+              {
+                "params": {},
+                "values": [
+                  "Room B"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "diagnostics": [],
+  "stats": {
+    "beforeSeries": 2,
+    "afterSeries": 2,
+    "beforeSteps": 22,
+    "afterSteps": 22,
+    "beforeOccurrences": 5,
+    "afterOccurrences": 5,
+    "skippedUids": []
+  },
+  "scope": {
+    "temporalTypes": [
+      "utc",
+      "floating",
+      "date"
+    ],
+    "metadataFields": [
+      "summary",
+      "location",
+      "description",
+      "status",
+      "transp",
+      "class",
+      "categories",
+      "url",
+      "organizer",
+      "attendee",
+      "priority",
+      "resources",
+      "contact"
+    ],
+    "ignored": [
+      "DTSTAMP",
+      "CREATED",
+      "LAST-MODIFIED",
+      "SEQUENCE",
+      "VALARM",
+      "ATTACH",
+      "X-properties"
+    ],
+    "limits": {
+      "maxBytes": 1048576,
+      "maxSeries": 500,
+      "maxSteps": 200000,
+      "maxOccurrences": 20000,
+      "maxChanges": 10000,
+      "maxReportBytes": 4194304
+    },
+    "unfoldedLineBytes": 65536,
+    "uidBytes": 1024,
+    "diagnosticsPerSnapshot": 200
+  }
+}

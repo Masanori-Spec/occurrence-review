@@ -1,0 +1,30 @@
+{
+  "name": "occurrence-review",
+  "version": "0.1.0",
+  "description": "Local, bounded occurrence-impact review for complete iCalendar snapshots",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "occurrence-review": "./src/cli.js"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "test:tz": "TZ=UTC node --test tests/*.test.js && TZ=Asia/Tokyo node --test tests/*.test.js",
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "test:browser": "node tests/browser/browser-test.mjs",
+    "check": "npm run format:check && npm test && npm run build",
+    "format:check": "prettier --check \"src/*.js\" \"scripts/*.mjs\" \"web/*.{js,html,css}\" \"tests/*.js\" \"tests/browser/*.mjs\" package.json .github/workflows/ci.yml"
+  },
+  "dependencies": {
+    "ical.js": "2.2.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.0",
+    "esbuild": "0.25.10",
+    "prettier": "3.6.2"
+  }
+}

@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#174b42" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; worker-src 'self'; connect-src 'none'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta
+      name="description"
+      content="Compare the real occurrences of two iCalendar files, privately in your browser."
+    />
+    <title>Occurrence Review · カレンダーの変更を、開催回ごとに</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#workspace" data-i18n="skip">比較ツールへ</a>
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Occurrence Review home"
+          ><span class="brand-mark" aria-hidden="true">o<span>↗</span></span
+          ><span>Occurrence<span class="brand-light"> Review</span></span></a
+        >
+        <div class="header-tools">
+          <span class="privacy-pill"
+            ><span aria-hidden="true">●</span>
+            <span data-i18n="local">端末内で処理</span></span
+          ><label class="sr-only" for="language" data-i18n="language"
+            >表示言語</label
+          ><select id="language">
+            <option value="ja">日本語</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </header>
+      <main>
+        <section class="hero" aria-labelledby="hero-title">
+          <div>
+            <p class="eyebrow">CALENDAR CHANGE INTELLIGENCE</p>
+            <h1 id="hero-title" data-i18n="title">
+              予定の差分を、<br />開催回ごとに。
+            </h1>
+            <p class="hero-copy" data-i18n="subtitle">
+              繰り返し予定の変更も、実際の1回ずつに展開。更新前と更新後の .ics
+              を比べ、見落としたくない変更を確認します。
+            </p>
+            <div class="hero-actions">
+              <button class="button secondary" id="example" type="button">
+                <span aria-hidden="true">↗</span>
+                <span data-i18n="example">サンプルで試す</span></button
+              ><span class="mini-note" data-i18n="noUpload"
+                >アップロード不要・登録不要</span
+              >
+            </div>
+          </div>
+          <div class="hero-visual" aria-hidden="true">
+            <div class="visual-top">
+              <span>OCTOBER / 2026</span><span class="visual-dots">•••</span>
+            </div>
+            <div class="calendar-days">
+              <span>M</span><span>T</span><span>W</span><span>T</span
+              ><span>F</span>
+            </div>
+            <div class="calendar-dates">
+              <span>05</span><span>06</span><span>07</span><span>08</span
+              ><span>09</span>
+            </div>
+            <div class="visual-event old">
+              <span class="event-dot"></span>10:00<span class="strike"></span>
+            </div>
+            <div class="move-line"><span>↘</span></div>
+            <div class="visual-event new">
+              <span class="event-dot"></span>11:00<span class="event-check"
+                >✓</span
+              >
+            </div>
+            <div class="visual-caption">
+              <span class="visual-label">ONE OCCURRENCE</span
+              ><strong data-i18n="visualCaption"
+                >シリーズ全体ではなく、変わった1回を。</strong
+              >
+            </div>
+          </div>
+        </section>
+        <section
+          class="workspace"
+          id="workspace"
+          tabindex="-1"
+          aria-labelledby="workspace-title"
+        >
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="step1">01 / INPUT</p>
+              <h2 id="workspace-title" data-i18n="inputTitle">
+                2つのカレンダーを比較
+              </h2>
+            </div>
+            <button class="button text-button" id="swap" type="button">
+              <span aria-hidden="true">⇄</span>
+              <span data-i18n="swap">前後を入れ替え</span>
+            </button>
+          </div>
+          <div class="input-grid">
+            <section class="input-card">
+              <div class="card-heading">
+                <div>
+                  <span class="version-dot before-dot"></span
+                  ><label for="before" data-i18n="before">更新前</label
+                  ><span class="version-caption">BEFORE</span>
+                </div>
+                <label class="file-button" for="before-file"
+                  ><span aria-hidden="true">＋</span>
+                  <span data-i18n="chooseFile">.ics を選ぶ</span></label
+                ><input
+                  type="file"
+                  id="before-file"
+                  class="file-input"
+                  accept=".ics,text/calendar"
+                  aria-describedby="before-file-note"
+                />
+              </div>
+              <textarea
+                id="before"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="off"
+                aria-describedby="before-file-note"
+                placeholder="BEGIN:VCALENDAR&#10;VERSION:2.0&#10;…&#10;END:VCALENDAR"
+              ></textarea>
+              <div class="input-footer">
+                <span id="before-file-note" data-i18n="pasteHint"
+                  >ファイルを選ぶか、ICSを貼り付け</span
+                ><span class="file-size">≤ 1 MiB</span>
+              </div>
+            </section>
+            <section class="input-card">
+              <div class="card-heading">
+                <div>
+                  <span class="version-dot after-dot"></span
+                  ><label for="after" data-i18n="after">更新後</label
+                  ><span class="version-caption">AFTER</span>
+                </div>
+                <label class="file-button" for="after-file"
+                  ><span aria-hidden="true">＋</span>
+                  <span data-i18n="chooseFile">.ics を選ぶ</span></label
+                ><input
+                  type="file"
+                  id="after-file"
+                  class="file-input"
+                  accept=".ics,text/calendar"
+                  aria-describedby="after-file-note"
+                />
+              </div>
+              <textarea
+                id="after"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="off"
+                aria-describedby="after-file-note"
+                placeholder="BEGIN:VCALENDAR&#10;VERSION:2.0&#10;…&#10;END:VCALENDAR"
+              ></textarea>
+              <div class="input-footer">
+                <span id="after-file-note" data-i18n="pasteHint"
+                  >ファイルを選ぶか、ICSを貼り付け</span
+                ><span class="file-size">≤ 1 MiB</span>
+              </div>
+            </section>
+          </div>
+          <div class="comparison-controls">
+            <div class="date-group">
+              <div class="date-field">
+                <label for="start" data-i18n="start">比較開始日</label
+                ><input type="date" id="start" required value="2026-10-01" />
+              </div>
+              <span class="date-arrow" aria-hidden="true">→</span>
+              <div class="date-field">
+                <label for="end" data-i18n="end">終了日（含まない）</label
+                ><input type="date" id="end" required value="2026-11-01" />
+              </div>
+            </div>
+            <div class="run-controls">
+              <button
+                class="button cancel-button"
+                id="cancel"
+                type="button"
+                hidden
+                data-i18n="cancel"
+              >
+                中止</button
+              ><button class="button primary" id="compare" type="button">
+                <span data-i18n="compare">開催回を比較</span
+                ><span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </div>
+          <p class="window-note" data-i18n="windowNote">
+            開始日時で期間に含まれる開催回を比較します。UTC・タイムゾーンなし・終日は別々に扱い、端末のタイムゾーンへ変換しません。
+          </p>
+          <div
+            id="status"
+            class="status"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          ></div>
+          <div id="error" class="error-box" role="alert" hidden></div>
+        </section>
+        <section
+          id="results"
+          class="results"
+          aria-labelledby="results-title"
+          hidden
+        >
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="step2">02 / REVIEW</p>
+              <h2 id="results-title" data-i18n="resultsTitle">変更レポート</h2>
+            </div>
+            <button class="button secondary small" id="download" type="button">
+              <span aria-hidden="true">↓</span>
+              <span data-i18n="download">JSONを保存</span>
+            </button>
+          </div>
+          <div id="report-banner" class="report-banner"></div>
+          <div id="summary" class="summary-grid"></div>
+          <div class="results-meta">
+            <p id="result-context"></p>
+            <span data-i18n="overlap">変更の種類は重複する場合があります</span>
+          </div>
+          <div
+            id="filters"
+            class="filters"
+            role="group"
+            aria-label="Filter changes"
+          ></div>
+          <div id="changes"></div>
+          <div id="diagnostics"></div>
+        </section>
+        <section id="empty" class="empty-state">
+          <span class="empty-icon" aria-hidden="true">≋</span>
+          <h2 data-i18n="emptyTitle">変更を見つける準備ができました</h2>
+          <p data-i18n="emptyText">
+            2つのファイルと期間を選ぶと、追加・削除・時刻移動などの差分がここに表示されます。
+          </p>
+        </section>
+        <section class="principles" aria-label="About this tool">
+          <div>
+            <span class="principle-number">01</span>
+            <h3 data-i18n="principle1">カレンダーは端末の中に</h3>
+            <p data-i18n="principle1Text">
+              入力内容はブラウザ内で処理。サーバーへの送信、分析用の収集、保存はしません。
+            </p>
+          </div>
+          <div>
+            <span class="principle-number">02</span>
+            <h3 data-i18n="principle2">判断の根拠まで確認</h3>
+            <p data-i18n="principle2Text">
+              UIDとRECURRENCE-IDで開催回を照合。変更前後と照合の根拠を一緒に確認できます。
+            </p>
+          </div>
+          <div>
+            <span class="principle-number">03</span>
+            <h3 data-i18n="principle3">比較できない内容は明示</h3>
+            <p data-i18n="principle3Text">
+              未対応のルールや不正な入力があれば「不完全」と表示。差分がないとは断定しません。
+            </p>
+          </div>
+        </section>
+      </main>
+      <footer>
+        <span class="footer-brand">Occurrence Review <span>v1.0</span></span
+        ><span data-i18n="footer"
+          >カレンダーを書き換えずに、変更を確かめる。</span
+        >
+      </footer>
+    </div>
+  </body>
+</html>
