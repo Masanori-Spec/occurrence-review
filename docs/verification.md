@@ -25,3 +25,17 @@ This file distinguishes implemented checks from executed evidence. It does not c
 Identity/order/folding/bookkeeping invariance; single and recurring moves; detached override deletion; single/series cancellations; RDATE/EXDATE deduplication; COUNT/UNTIL/month-31/leap-year behavior; in→out and out→in moves; all-day exclusive end; explicit durations; TZID/DST unsupported diagnostics; duplicate/orphan/type errors; malformed lexical forms before parser normalization; safety limits; CLI exit codes; browser-worker error response; input and worker race scenarios.
 
 The independent recurrence fixture exercises the supported UTC subset against another implementation. It is a regression oracle, not proof that either implementation satisfies every RFC combination. TZID behavior is tested only for explicit rejection, not successful DST computation.
+
+## First published CI and runner correction
+
+[Run 37114747033](https://github.com/Masanori-Spec/occurrence-review/actions/runs/37114747033), for commit `a3ca5bc8308e962f5002b994df54dbf4ece32190`, passed all four Node/timezone matrix jobs. The browser job failed at Chromium startup on Ubuntu 24.04 with “No usable sandbox”; none of its UI scenarios ran.
+
+The browser job now selects the standard `ubuntu-22.04` runner, retaining the exact pinned Playwright Chromium build and `chromiumSandbox: true`. It does not change AppArmor, sysctl, privileges, browser sandbox flags, or test assertions. A new CI run is required to verify this correction.
+
+Maintenance boundary: [GitHub's official runner announcement](https://github.com/actions/runner-images/issues/14254) states that Ubuntu 22.04 deprecation began September 17, 2026 and retirement is scheduled for April 17, 2027, with March/April brownouts. This runner selection must be migrated before that cutoff. A possible future supported route is the vendor Chrome installation and its existing Ubuntu AppArmor profile, documented by [Chromium](https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md); that route has not been adopted or verified here.
+
+## Browser-state regression found in the second run
+
+[Run 37115004539](https://github.com/Masanori-Spec/occurrence-review/actions/runs/37115004539), for commit `3a356843cc2fd771c253efb1e1f6645352ab4764`, successfully launched sandbox-enabled Chromium on Ubuntu 22.04. All four unit matrix jobs and 21 of 22 browser scenarios passed. The remaining scenario found that successive input events cleared the “Inputs changed” rerun notice after the first event invalidated the worker/report. Stale results were correctly suppressed, but the status notice disappeared.
+
+The UI now preserves that stale state through subsequent edits until a new comparison or explicit action changes it. The scenario retains its original assertion and additionally makes repeated edits/input events before checking the notice and late-result suppression. A new exact-commit browser run is still required; the failed scenario is not counted as passed.

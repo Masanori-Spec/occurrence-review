@@ -436,6 +436,12 @@ await test("newer inputs suppress an old asynchronous result", async (page) => {
   await page
     .locator("#before")
     .fill(calendar(...event("20261005T100000Z", "New content")));
+  // A second edit must retain the rerun notice after the first retired the worker.
+  await page
+    .locator("#before")
+    .fill(calendar(...event("20261005T100000Z", "Newest content")));
+  await page.locator("#before").dispatchEvent("input");
+  assert.match(await page.locator("#status").textContent(), /Inputs changed/);
   assert.equal(await page.locator("#cancel").isVisible(), false);
   await page.waitForTimeout(400);
   assert.equal(await page.locator("#results").isVisible(), false);

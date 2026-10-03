@@ -285,7 +285,9 @@ function clearReport() {
   $("diagnostics").replaceChildren();
 }
 function invalidate(key = "stale") {
-  const hadWork = Boolean(currentWorker || report);
+  // Keep the rerun notice across every keystroke after work was invalidated.
+  // The first edit already retired the worker/report, but the inputs remain stale.
+  const hadWork = Boolean(currentWorker || report || statusKey === "stale");
   stopWorker();
   clearReport();
   setError();
